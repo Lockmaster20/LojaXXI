@@ -1,8 +1,16 @@
 from flask import Flask, render_template, request, redirect
 from user import User
+from artigos import Artigos
 
 app = Flask(__name__)
 usr = User()
+art = Artigos()
+
+
+@app.route('/inserirA')
+def inserirA():
+    art.inserirA('Placa Gráfica', 'Asus', 'RTX 3080', 567.7)
+    return redirect('/')
 
 
 @app.route('/tabela')
