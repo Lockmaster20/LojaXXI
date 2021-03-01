@@ -49,11 +49,11 @@ class Artigos:
         return erro
 
 
-    def existe(self, login):
+    def existe(self, id):
         try:
             ficheiro = self.herokudb()
             db = ficheiro.cursor()
-            db.execute("SELECT * FROM usr WHERE login = %s", (login,))
+            db.execute("SELECT * FROM artigos WHERE id = %s", (id,))
             valor = db.fetchone()
             ficheiro.close()
         except:
@@ -61,27 +61,18 @@ class Artigos:
         return valor
 
 
-    def log(self, login, password):
+    def alterarA(self, id, price):
         ficheiro = self.herokudb()
         db = ficheiro.cursor()
-        db.execute("SELECT * FROM usr WHERE login = %s and password = %s", (login, self.code(password),))
-        valor = db.fetchone()
-        ficheiro.close()
-        return valor
-
-
-    def alterar(self, login, password):
-        ficheiro = self.herokudb()
-        db = ficheiro.cursor()
-        db.execute("UPDATE usr SET password = %s WHERE login = %s", (self.code(password), login))
+        db.execute("UPDATE artigos SET price = %s WHERE id = %s", (price, id))
         ficheiro.commit()
         ficheiro.close()
 
 
-    def apaga(self, login):
+    def eliminarA(self, id):
         ficheiro = self.herokudb()
         db = ficheiro.cursor()
-        db.execute("DELETE FROM usr WHERE login = %s", (login,))
+        db.execute("DELETE FROM artigos WHERE id = %s", (id))
         ficheiro.commit()
         ficheiro.close()
 
@@ -103,6 +94,18 @@ class Artigos:
             ficheiro = self.herokudb()
             db = ficheiro.cursor()
             db.execute("SELECT column_name FROM information_schema.columns WHERE table_name = 'artigos';")
+            valor = db.fetchall()
+            ficheiro.close()
+        except:
+            valor = ""
+        return valor
+
+
+    def listaid(self, id):
+        try:
+            ficheiro = self.herokudb()
+            db = ficheiro.cursor()
+            db.execute("select * from artigos WHERE id = %s", (id,))
             valor = db.fetchall()
             ficheiro.close()
         except:

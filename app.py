@@ -20,6 +20,33 @@ def inserirA():
     return render_template('Artigos/inserirA.html', erro=erro, usr=usr, art=art)
 
 
+@app.route('/eliminarA', methods=['GET', 'POST'])
+def eliminarA():
+    erro = None
+    if request.method == 'POST':
+        v1 = request.form['id']
+        if not art.existe(v1):
+            erro = 'O Artigo não existe.'
+        else:
+            art.eliminarA(v1)
+            erro = 'Artigo Eliminado com Sucesso.'
+    return render_template('Artigos/eliminarA.html', erro=erro, usr=usr, art=art)
+
+
+@app.route('/alterarA', methods=['GET', 'POST'])
+def alterarA():
+    erro = None
+    if request.method == 'POST':
+        v1 = request.form['id']
+        v2 = request.form['price']
+        if not art.existe(v1):
+            erro = 'O Artigo não existe.'
+        else:
+            art.alterarA(v1, v2)
+            erro = 'Preço alterado com sucesso.'
+    return render_template('Artigos/alterarA.html', erro=erro, usr=usr, art=art)
+
+
 @app.route('/tabela')
 def tabela():
     title = "Lista de Utilizadores"
