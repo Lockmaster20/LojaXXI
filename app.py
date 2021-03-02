@@ -9,43 +9,36 @@ art = Artigos()
 
 @app.route('/inserirA', methods=['GET', 'POST'])
 def inserirA():
-
+    erro = None
     if request.method == 'POST':
         v1 = request.form['category']
         v2 = request.form['brand']
         v3 = request.form['description']
         v4 = request.form['price']
         art.inserirA(v1, v2, v3, v4)
-    erro = "Artigo inserido com sucesso"
+        erro = "Artigo inserido com sucesso"
     return render_template('Artigos/inserirA.html', erro=erro, usr=usr, art=art)
 
 
-@app.route('/eliminarA', methods=['GET', 'POST'])
-def eliminarA():
+@app.route('/editarA', methods=['GET', 'POST'])
+def editarA():
     erro = None
     if request.method == 'POST':
-        v1 = request.form['id']
-        if not art.existe(v1):
-            erro = 'O Artigo não existe.'
+        if art.id:
+            if "cancel" in request.form:
+                art.reset()
+            elif "delete" in request.form:
+                art.apaga(art.id)
+                erro = "Artigo eliminado com sucesso"
+            elif "edit" in request.form:
+                v1 = request.form['price']
+                art.alterar(art.id, v1)
+                art.select(art.id)  # Atualizar os dados na classe
+                erro = "Preço alterado com sucesso"
         else:
-            art.eliminarA(v1)
-            erro = 'Artigo Eliminado com Sucesso.'
-    return render_template('Artigos/eliminarA.html', erro=erro, usr=usr, art=art)
-
-
-@app.route('/alterarA', methods=['GET', 'POST'])
-def alterarA():
-    erro = None
-    if request.method == 'POST':
-        v1 = request.form['id']
-        v2 = request.form['price']
-        if not art.existe(v1):
-            erro = 'O Artigo não existe.'
-        else:
-            art.alterarA(v1, v2)
-            erro = 'Preço alterado com sucesso.'
-    return render_template('Artigos/alterarA.html', erro=erro, usr=usr, art=art)
-
+            v1 = request.form['id']
+            erro = art.select(v1)
+    return render_template('Artigos/editarA.html', erro=erro, usr=usr, art=art)
 
 @app.route('/tabela')
 def tabela():
