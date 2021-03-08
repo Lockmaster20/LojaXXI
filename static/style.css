@@ -35,7 +35,7 @@ fieldset{
 
 /* Current/active navbar link */
 .active {
-  background-color: #ffcc00;
+  background-color: gold;
   color: black;
 }
 
