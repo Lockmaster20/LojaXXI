@@ -159,7 +159,7 @@ class Artigos:
             ficheiro = self.herokudb()
             db = ficheiro.cursor()
             db.execute("select artigos.id, c.category, m.brand, description, "
-                       "price from artigos join categorias c on artigos.category = c.id full outer join marcas m on artigos.brand = m.id")
+                       "price from artigos join categorias c on artigos.category = c.id join marcas m on artigos.brand = m.id")
             valor = db.fetchall()
             ficheiro.close()
         except:
